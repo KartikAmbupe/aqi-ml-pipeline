@@ -1,1 +1,1 @@
-Mean Absolute Error (MAE): 7.5161
+Mean Absolute Error (MAE): 7.4252
