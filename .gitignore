@@ -1,0 +1,7 @@
+.env
+__pycache__/
+*.pkl
+data/
+model_logs.txt
+
+city_day.csv

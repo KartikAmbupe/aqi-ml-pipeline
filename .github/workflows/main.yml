@@ -1,0 +1,46 @@
+name: Daily AQI Model Training
+
+on:
+  push:
+    branches:
+      - main
+  schedule:
+    - cron: '0 5 * * *'
+  workflow_dispatch:
+
+jobs:
+  build-and-train:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      # --- CHANGED ---
+      - name: Ingest new data
+        run: python src/data_ingestion.py # <-- Added 'src/'
+        env:
+          OPENWEATHER_API_KEY: ${{ secrets.OPENWEATHER_API_KEY }}
+
+      # --- CHANGED ---
+      - name: Train new model
+        run: python src/train.py # <-- Added 'src/'
+
+      # --- CHANGED ---
+      - name: Commit and push changes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Automated daily data ingestion and model training"
+          # Added 'src/' to paths
+          file_pattern: "data/raw/aqi_data.csv src/models/model.pkl src/metrics.txt"
+          commit_options: "--no-verify"
