@@ -29,21 +29,18 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      # --- CHANGED ---
       - name: Ingest new data
-        run: python src/data_ingestion.py # <-- Added 'src/'
+        run: python src/data_ingestion.py 
         env:
           OPENWEATHER_API_KEY: ${{ secrets.OPENWEATHER_API_KEY }}
 
-      # --- CHANGED ---
       - name: Train new model
-        run: python src/train.py # <-- Added 'src/'
+        run: python src/train.py 
 
-      # --- CHANGED ---
       - name: Commit and push changes
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "Automated daily data ingestion and model training"
-          # Added 'src/' to paths
+
           file_pattern: "data/raw/aqi_data.csv src/models/model.pkl src/metrics.txt"
           commit_options: "--no-verify"
