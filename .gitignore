@@ -1,7 +1,15 @@
+# Environment variables & secrets
 .env
-__pycache__/
-*.pkl
-data/
-model_logs.txt
+venv/
+.venv/
 
+# Original Kaggle data (we don't need this in the repo)
 city_day.csv
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# IDE
+.idea/
+.vscode/
